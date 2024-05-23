@@ -4,7 +4,7 @@ const Hero = () => {
       <section className="text-black">
         <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen items-center">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="bg-gradient-to-r  bg-clip-text  text-black text-3xl font-extrabold text-transparent sm:text-5xl">
+            <h1 className="bg-gradient-to-r  bg-clip-text text-gray-600 text-3xl font-extrabold text-transparent sm:text-5xl">
               Create your form with the help of ai
               <span className="sm:block text-blue-400">
                 {" "}
