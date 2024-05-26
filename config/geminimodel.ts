@@ -1,16 +1,18 @@
+import "dotenv";
 import {
   GoogleGenerativeAI,
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
 
-const apiKey =
-  process.env.GEMINI_API_KEY! || "AIzaSyBCHWTS7ydODQNw4Tr1Hq4BHvKaVjxES30";
+// const apiKey = process.env.GEMINI_API_KEY! || "AIzaSyCORcoY6yweJToEXFWBFfl6lKmFFsTOo0E";
+// console.log(apiKey);
 
-const genAI = new GoogleGenerativeAI(apiKey);
+const genAI = new GoogleGenerativeAI("AIzaSyCORcoY6yweJToEXFWBFfl6lKmFFsTOo0E");
+
 console.log(genAI);
 
-const model = genAI.getGenerativeModel({
+export const model = genAI.getGenerativeModel({
   model: "gemini-1.5-pro-latest",
 });
 

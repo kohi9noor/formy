@@ -15,15 +15,18 @@ import { forms } from "@/config/schema";
 import { useUser } from "@clerk/nextjs";
 import { useState } from "react";
 import moment from "moment";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+
 const PROMPT =
-  "on the basis of decription,please give from in json format with form title of form subheading for form form having name, placehodler name, and form label filedType, filed required in Json Format";
+  "on the basis of decription,please give from in json format with form title of form subheading for form form having name, placehodler name, and form label filedType, filed required in Json Format and only give json data we dont need any other content";
 
 const CreateForm = () => {
   const [openDia, setOpenDio] = useState(false);
   const [loading, setLoading] = useState<boolean | undefined>();
   const [userInput, setUserInput] = useState<string | undefined>();
   const { user } = useUser();
-
+  const router = useRouter();
   const onCreateForm = async () => {
     console.log(userInput);
     setLoading(true);
@@ -41,6 +44,11 @@ const CreateForm = () => {
           })
           .returning({ id: forms.id });
         console.log(response[0].id);
+
+        if (response[0].id) {
+          router.push(`/edit-form/${response[0].id}`);
+        }
+
         setLoading(false);
       }
 
@@ -78,7 +86,7 @@ const CreateForm = () => {
                 className="bg-blue-600"
                 onClick={() => onCreateForm()}
               >
-                Create
+                {loading ? <Loader2 className=" animate-spin" /> : "Create"}
               </Button>
             </div>
           </DialogDescription>
