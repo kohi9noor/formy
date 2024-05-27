@@ -17,6 +17,7 @@ import { useState } from "react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { extractJson } from "@/lib/utils";
 
 const PROMPT =
   "on the basis of decription,please give from in json format with form title of form subheading for form form having name, placehodler name, and form label filedType, filed required in Json Format and only give json data we dont need any other content";
@@ -33,12 +34,21 @@ const CreateForm = () => {
     const result = await AIchatSession.sendMessage(
       "Description:" + userInput + PROMPT
     );
-    if (result.response.text()) {
+
+    const data = result.response.text();
+    const jsondata = JSON.stringify(data);
+    const jsonForm = JSON.parse(jsondata);
+    const jsonString = jsonForm.indexOf("{");
+    const jsonStringEnd = jsonForm.lastIndexOf("}") + 1;
+
+    const extractedJson = jsonForm.substring(jsonString, jsonStringEnd);
+
+    if (extractedJson) {
       {
         const response = await db
           .insert(forms)
           .values({
-            jsonform: result.response.text(),
+            jsonform: extractedJson,
             createdBy: user?.primaryEmailAddress?.emailAddress,
             createdAt: moment().format("DD/MM/yyyy"),
           })

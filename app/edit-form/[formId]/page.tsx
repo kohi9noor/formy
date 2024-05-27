@@ -11,51 +11,42 @@ import React, { useEffect, useState } from "react";
 const EditForm = () => {
   const params = useParams();
   const { user } = useUser();
-  const [jsonForm, setJsonForm] = useState<any | null>(null);
+  const [jsonForm, setJsonForm] = useState<any | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [updateTrigger, setUpdateTrigger] = useState<any | undefined>();
-  const [record, setRecord] = useState<any | undefined>([]);
+  const [record, setRecord] = useState<any | undefined>();
 
   useEffect(() => {
-    if (updateTrigger) {
-      setJsonForm(jsonForm);
-      // updateJsonFormInDb();
-      checking();
+    if (updateTrigger && jsonForm) {
+      updateJsonFormInDb();
     }
   }, [updateTrigger]);
 
-  const checking = async () => {
-    const form = await db
-      .update(forms)
-      .set({ jsonform: JSON.stringify({ key: "new value" }) })
-      .where(
-        and(
-          eq(jsonForm.data.user, user?.primaryEmailAddress?.emailAddress),
-          eq(jsonForm.data.id, record.id)
-        )
-      );
-    console.log(form);
-  };
-
   const updateJsonFormInDb = async () => {
-    if (!jsonForm) return;
-
+    if (!jsonForm || !record || !user) {
+      console.warn("updateJsonFormInDb: Missing required data.", {
+        jsonForm,
+        record,
+        user,
+      });
+      return;
+    }
+    console.log(record, jsonForm.data.id);
     try {
       const result = await db
-
-        .update(jsonForm)
+        .update(forms)
         .set({
-          jsonForm: JSON.stringify(jsonForm.fields),
+          jsonform: JSON.stringify(jsonForm),
         })
         .where(
           and(
-            eq(jsonForm.data.id, record.id),
-            eq(jsonForm.data.createdBy, user?.primaryEmailAddress?.emailAddress)
+            eq(forms.id, record.id),
+            eq(record.createdBy, user.primaryEmailAddress?.emailAddress)
           )
         );
-      console.log(result);
+      console.log("Update result: ", result);
     } catch (error) {
-      console.log(error);
+      console.error("Error updating JSON form in DB: ", error);
     }
   };
 
@@ -75,22 +66,24 @@ const EditForm = () => {
         );
 
       if (result.length > 0) {
+        const formRecord = result[0];
         const data = {
-          user: result[0].createdBy,
-          id: result[0].id,
+          user: formRecord.createdBy,
+          id: formRecord.id,
         };
-        console.log(data);
-        const jsonString = result[0].jsonform;
-        const jsonStringStart = jsonString.indexOf("{");
-        const jsonStringEnd = jsonString.lastIndexOf("}") + 1;
-        const extractedJsonString = jsonString.substring(
-          jsonStringStart,
-          jsonStringEnd
-        );
-        const parsedJson = JSON.parse(extractedJsonString);
-        parsedJson.data = data;
-        setRecord(result[0]);
-        setJsonForm(parsedJson);
+
+        try {
+          const parsedJson = JSON.parse(formRecord.jsonform);
+          parsedJson.data = data;
+
+          setRecord(formRecord);
+          setJsonForm(parsedJson);
+          console.log("Parsed JSON Form: ", parsedJson);
+        } catch (parseError) {
+          console.error("Error parsing JSON string: ", parseError);
+        }
+      } else {
+        console.log("No form found with the given ID.");
       }
       setLoading(false);
     } catch (error) {
@@ -119,14 +112,13 @@ const EditForm = () => {
       >
         <ArrowLeft /> back
       </h2>
-      {/* controller */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div className="p-5 border rounded-lg shadow-md"></div>
         <div className="md:col-span-2 flex items-center justify-center border rounded-lg h-screen p-4">
           {loading ? (
             <div>Loading...</div>
           ) : jsonForm ? (
-            <FormUI jsonForm={jsonForm} onFiledUpdate={onfiledUpdate} />
+            <FormUI jsonForm={jsonForm} onFieldUpdate={onfiledUpdate} />
           ) : (
             <div>No form data available</div>
           )}

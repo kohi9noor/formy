@@ -12,7 +12,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import FieldEdit from "./FieldEdit";
 
-const FormUI = ({ jsonForm, onFiledUpdate }: any) => {
+const FormUI = ({ jsonForm, onFieldUpdate }: any) => {
   return (
     <div className="border p-5 md:w-[600px]">
       <h2 className="font-bold text-center text-2xl">{jsonForm?.formTitle}</h2>
@@ -24,7 +24,7 @@ const FormUI = ({ jsonForm, onFiledUpdate }: any) => {
           <div className=" flex justify-end absolute top-0 right-0 ">
             <FieldEdit
               defaultValue={item}
-              onUpdate={(value: any) => onFiledUpdate(value, index)}
+              onUpdate={(value: any) => onFieldUpdate(value, index)}
             />
           </div>
           {item.fieldType === "select" ? (
