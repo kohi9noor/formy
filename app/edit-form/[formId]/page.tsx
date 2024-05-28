@@ -31,7 +31,7 @@ const EditForm = () => {
       });
       return;
     }
-    console.log(record, jsonForm.data.id);
+    console.log(record, jsonForm.data.id, jsonForm.fields);
     try {
       const result = await db
         .update(forms)
@@ -104,6 +104,14 @@ const EditForm = () => {
     setUpdateTrigger(Date.now());
   };
 
+  const dleteFiled = async (indexItem: number) => {
+    const result = jsonForm.fields.filter(
+      (item: any, index: number) => indexItem != index
+    );
+    jsonForm.fields = result;
+    setUpdateTrigger(Date.now());
+  };
+
   return (
     <div className="p-10">
       <h2
@@ -118,7 +126,11 @@ const EditForm = () => {
           {loading ? (
             <div>Loading...</div>
           ) : jsonForm ? (
-            <FormUI jsonForm={jsonForm} onFieldUpdate={onfiledUpdate} />
+            <FormUI
+              jsonForm={jsonForm}
+              deleteFiled={(index: number) => dleteFiled(index)}
+              onFieldUpdate={onfiledUpdate}
+            />
           ) : (
             <div>No form data available</div>
           )}

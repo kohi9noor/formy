@@ -12,12 +12,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import FieldEdit from "./FieldEdit";
 
-const FormUI = ({ jsonForm, onFieldUpdate }: any) => {
+const FormUI = ({ jsonForm, onFieldUpdate, deleteFiled }: any) => {
   return (
     <div className="border p-5 md:w-[600px]">
-      <h2 className="font-bold text-center text-2xl">{jsonForm?.formTitle}</h2>
+      <h2 className="font-bold text-center text-2xl">
+        {jsonForm?.formTitle || jsonForm?.title}
+      </h2>
       <h2 className="text-sm text-gray-400 text-center">
-        {jsonForm?.formSubheading}
+        {jsonForm?.formSubheading || jsonForm?.subheading}
       </h2>
       {jsonForm?.fields.map((item: any, index: number) => (
         <div key={index} className="my-3 relative">
@@ -25,6 +27,7 @@ const FormUI = ({ jsonForm, onFieldUpdate }: any) => {
             <FieldEdit
               defaultValue={item}
               onUpdate={(value: any) => onFieldUpdate(value, index)}
+              deleteFiled={() => deleteFiled(index)}
             />
           </div>
           {item.fieldType === "select" ? (

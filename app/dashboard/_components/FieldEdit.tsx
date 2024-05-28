@@ -7,8 +7,19 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
-const FieldEdit = ({ defaultValue, onUpdate }: any) => {
+const FieldEdit = ({ defaultValue, onUpdate, deleteFiled }: any) => {
   const [label, setlabel] = useState<string | undefined>(defaultValue?.label);
   const [placeholder, setPlaceHodler] = useState<string | undefined>(
     defaultValue?.placeholder
@@ -54,7 +65,29 @@ const FieldEdit = ({ defaultValue, onUpdate }: any) => {
           </Button>
         </PopoverContent>
       </Popover>
-      <Trash color="red" className="w-5 h-5" />
+      <AlertDialog>
+        <AlertDialogTrigger>
+          <Trash color="red" className="w-5 h-5" />
+        </AlertDialogTrigger>
+        <AlertDialogContent className=" bg-red-500 text-black">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              form and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteFiled()}
+              className="hover:bg-blue-400"
+            >
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
