@@ -12,7 +12,6 @@ import {
 import { useState } from "react";
 
 const Controller = ({ selectedTheme, setBackground }: any) => {
-  console.log(setBackground);
   const [showMore, setShowMore] = useState<number | undefined>(6);
 
   return (

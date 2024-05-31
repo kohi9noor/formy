@@ -6,9 +6,11 @@ import { db } from "@/config";
 import { forms } from "@/config/schema";
 import { useUser } from "@clerk/nextjs";
 import { and, eq } from "drizzle-orm";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Share, SquareArrowRight } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const EditForm = () => {
   const params = useParams();
@@ -28,6 +30,28 @@ const EditForm = () => {
       updateJsonFormInDb();
     }
   }, [updateTrigger]);
+
+  const updatedControllerFields = async (value: any, columnname: any) => {
+    if (!user) return;
+
+    console.log(value, columnname);
+
+    const result = await db
+      .update(forms)
+      .set({
+        [columnname]: value,
+      })
+      .where(
+        and(
+          eq(forms.id, record.id),
+          eq(record.createdBy, user.primaryEmailAddress?.emailAddress)
+        )
+      );
+    console.log(result);
+    toast({
+      title: "Field updated",
+    });
+  };
 
   const updateJsonFormInDb = async () => {
     if (!jsonForm || !record || !user) {
@@ -88,6 +112,8 @@ const EditForm = () => {
 
           setRecord(formRecord);
           setJsonForm(parsedJson);
+          setSelectedTheme(result[0].theme!);
+          setSelectedbackground(result[0].background!);
           console.log("Parsed JSON Form: ", parsedJson);
         } catch (parseError) {
           console.error("Error parsing JSON string: ", parseError);
@@ -128,6 +154,21 @@ const EditForm = () => {
   console.log(selectedbackhround);
   return (
     <div className="p-10">
+      <div className=" flex gap-2 items-center my-5 cursor-pointer justify-end">
+        <Link href={`/aiform/${params.formId}`} target="_black">
+          <Button className="bg-blue-500 flex gap-2">
+            <SquareArrowRight className="w-5 h-5" />
+            live Preview
+          </Button>
+        </Link>
+        <Button
+          className="
+        bg-green-600 flex gap-2 hover:bg-green-700"
+        >
+          <Share className="w-5 h-5" />
+          Share
+        </Button>
+      </div>
       <h2
         onClick={() => router.back()}
         className="flex gap-2 items-center my-5 cursor-pointer hover:font-bold transition-all"
@@ -137,8 +178,14 @@ const EditForm = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div className="p-5 border rounded-lg shadow-md">
           <Controller
-            selectedTheme={(value: any) => setSelectedTheme(value)}
-            setBackground={(value: any) => setSelectedbackground(value)}
+            selectedTheme={(value: any) => {
+              updatedControllerFields(value, "theme");
+              setSelectedTheme(value);
+            }}
+            setBackground={(value: any) => {
+              updatedControllerFields(value, "background");
+              setSelectedbackground(value);
+            }}
           />
         </div>
         <div
