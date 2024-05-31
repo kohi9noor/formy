@@ -1,5 +1,7 @@
 "use client";
 import FormUI from "@/app/dashboard/_components/FormUI";
+import Controller from "@/app/dashboard/_components/Controllers";
+import { useToast } from "@/components/ui/use-toast";
 import { db } from "@/config";
 import { forms } from "@/config/schema";
 import { useUser } from "@clerk/nextjs";
@@ -15,6 +17,11 @@ const EditForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [updateTrigger, setUpdateTrigger] = useState<any | undefined>();
   const [record, setRecord] = useState<any | undefined>();
+  const { toast } = useToast();
+
+  const [selectedTheme, setSelectedTheme] = useState<string | undefined>(
+    "light"
+  );
 
   useEffect(() => {
     if (updateTrigger && jsonForm) {
@@ -44,6 +51,9 @@ const EditForm = () => {
             eq(record.createdBy, user.primaryEmailAddress?.emailAddress)
           )
         );
+      toast({
+        title: "Field delted",
+      });
       console.log("Update result: ", result);
     } catch (error) {
       console.error("Error updating JSON form in DB: ", error);
@@ -112,6 +122,10 @@ const EditForm = () => {
     setUpdateTrigger(Date.now());
   };
 
+  const [selectedbackhround, setSelectedbackground] = useState<
+    string | undefined
+  >();
+  console.log(selectedbackhround);
   return (
     <div className="p-10">
       <h2
@@ -121,16 +135,27 @@ const EditForm = () => {
         <ArrowLeft /> back
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="p-5 border rounded-lg shadow-md"></div>
-        <div className="md:col-span-2 flex items-center justify-center border rounded-lg h-screen p-4">
+        <div className="p-5 border rounded-lg shadow-md">
+          <Controller
+            selectedTheme={(value: any) => setSelectedTheme(value)}
+            setBackground={(value: any) => setSelectedbackground(value)}
+          />
+        </div>
+        <div
+          className="md:col-span-2 flex items-center justify-center overflow-scroll contain-content border rounded-lg h-screen p-4 py-10"
+          style={{ backgroundImage: selectedbackhround }}
+        >
           {loading ? (
             <div>Loading...</div>
           ) : jsonForm ? (
-            <FormUI
-              jsonForm={jsonForm}
-              deleteFiled={(index: number) => dleteFiled(index)}
-              onFieldUpdate={onfiledUpdate}
-            />
+            <>
+              <FormUI
+                selectedTheme={selectedTheme}
+                jsonForm={jsonForm}
+                deleteFiled={(index: number) => dleteFiled(index)}
+                onFieldUpdate={onfiledUpdate}
+              />
+            </>
           ) : (
             <div>No form data available</div>
           )}
