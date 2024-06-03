@@ -9,3 +9,9 @@ export const forms = pgTable("forms", {
   createdAt: varchar("createdAt", { length: 256 }).notNull(),
   createdBy: varchar("createdBy", { length: 256 }).notNull(),
 });
+
+export const userResponse = pgTable("userResponses", {
+  id: serial("id").primaryKey(),
+  jsonResponse: text("jsonResponse").notNull(),
+  createdAt: varchar("createdAt", { length: 256 }).notNull(),
+});
