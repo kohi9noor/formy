@@ -20,7 +20,7 @@ const EditForm = () => {
   const [updateTrigger, setUpdateTrigger] = useState<any | undefined>();
   const [record, setRecord] = useState<any | undefined>();
   const { toast } = useToast();
-
+  console.log(jsonForm);
   const [selectedTheme, setSelectedTheme] = useState<string | undefined>(
     "light"
   );

@@ -17,6 +17,7 @@ const FormUI = ({
   selectedTheme,
   onFieldUpdate,
   deleteFiled,
+  editable = true,
 }: any) => {
   return (
     <div>
@@ -29,13 +30,15 @@ const FormUI = ({
         </h2>
         {jsonForm?.fields.map((item: any, index: number) => (
           <div key={index} className="my-3 relative">
-            <div className=" flex justify-end absolute top-0 right-0 ">
-              <FieldEdit
-                defaultValue={item}
-                onUpdate={(value: any) => onFieldUpdate(value, index)}
-                deleteFiled={() => deleteFiled(index)}
-              />
-            </div>
+            {editable && (
+              <div className=" flex justify-end absolute top-0 right-0 ">
+                <FieldEdit
+                  defaultValue={item}
+                  onUpdate={(value: any) => onFieldUpdate(value, index)}
+                  deleteFiled={() => deleteFiled(index)}
+                />
+              </div>
+            )}
             {item.fieldType === "select" ? (
               <>
                 <label className="text-xs text-grey-500">{item.label}</label>
