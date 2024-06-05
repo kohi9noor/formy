@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import CreateForm from "./_components/CreateForm";
-
+import FormList from "./_components/FormListDesh";
 const page = () => {
   return (
     <div className=" p-10">
@@ -8,6 +8,9 @@ const page = () => {
         Dashboard
         <CreateForm />
       </h2>
+      {/* List of Form */}
+
+      <FormList />
     </div>
   );
 };
