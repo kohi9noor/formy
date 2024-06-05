@@ -43,6 +43,7 @@ const page = ({ params }: any) => {
             onFieldUpdate={() => console.log("update huehuhe")}
             deleteFiled={() => console.log("huehueh")}
             editable={false}
+            Id={record?.id}
           />
         )}
         <Link href={"http://localhost:3000/"}>

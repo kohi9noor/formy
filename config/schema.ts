@@ -1,4 +1,4 @@
-import { serial, text, varchar, pgTable } from "drizzle-orm/pg-core";
+import { serial, text, varchar, pgTable, integer } from "drizzle-orm/pg-core";
 
 export const forms = pgTable("forms", {
   id: serial("id").primaryKey(),
@@ -14,4 +14,5 @@ export const userResponse = pgTable("userResponses", {
   id: serial("id").primaryKey(),
   jsonResponse: text("jsonResponse").notNull(),
   createdAt: varchar("createdAt", { length: 256 }).notNull(),
+  formRef: integer("formRef").references(() => forms.id),
 });
