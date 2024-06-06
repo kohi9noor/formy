@@ -11,7 +11,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
+import { RWebShare } from "react-web-share";
 const EditForm = () => {
   const params = useParams();
   const { user } = useUser();
@@ -161,13 +161,24 @@ const EditForm = () => {
             live Preview
           </Button>
         </Link>
-        <Button
-          className="
-        bg-green-600 flex gap-2 hover:bg-green-700"
-        >
-          <Share className="w-5 h-5" />
-          Share
-        </Button>
+
+        <div>
+          <RWebShare
+            data={{
+              text: `${
+                jsonForm?.formSubheading || jsonForm?.subheading
+              }, Build your form in seconds with formy`,
+              url: `http://localhost:3000/aiform/${jsonForm?.data?.id}`,
+              title: `${jsonForm?.title || jsonForm?.formTitle}`,
+            }}
+            onClick={() => console.log("shared successfully!")}
+          >
+            <Button variant={"outline"} size={"sm"} className="flex gap-2">
+              <Share className="h-5 w-5" />
+              Share
+            </Button>
+          </RWebShare>
+        </div>
       </div>
       <h2
         onClick={() => router.back()}

@@ -32,7 +32,10 @@ const FormList = () => {
         formList.map((form: any, index: number) => {
           return (
             <div key={index}>
-              <FormlistItem form={JSON.parse(form?.jsonform)} />
+              <FormlistItem
+                form={JSON.parse(form?.jsonform)}
+                refreshData={getFormList}
+              />
             </div>
           );
         })}
