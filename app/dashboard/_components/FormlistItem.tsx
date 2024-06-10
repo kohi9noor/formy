@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,8 +19,9 @@ import { forms } from "@/config/schema";
 import { and, eq } from "drizzle-orm";
 import { useRouter } from "next/navigation";
 import { RWebShare } from "react-web-share";
-const FormlistItem = ({ form, refreshData }: any) => {
-  console.log(form);
+
+const FormlistItem = ({ id, form, refreshData }: any) => {
+  console.log(id);
 
   const { user } = useUser();
 
@@ -38,20 +39,31 @@ const FormlistItem = ({ form, refreshData }: any) => {
         console.log("form deleted", result);
         refreshData();
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error deleting form:", error);
+    }
   };
 
   const router = useRouter();
 
+  const handleEditRoute = () => {
+    console.log(id, "route hit");
+    if (!id) {
+      console.error("ID is undefined, cannot navigate");
+      return;
+    }
+    router.push(`http://localhost:3000/edit-form/${id}`);
+  };
+
   return (
-    <div className=" border shadow-sm rounded-lg p-4">
+    <div className="border shadow-sm rounded-lg p-4">
       <div className="flex justify-between">
         <h2></h2>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Trash className=" w-5 h-5 text-red-600 cursor-pointer hover:scale-105 transition-all" />
+            <Trash className="w-5 h-5 text-red-600 cursor-pointer hover:scale-105 transition-all" />
           </AlertDialogTrigger>
-          <AlertDialogContent className=" bg-white">
+          <AlertDialogContent className="bg-white">
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
@@ -62,8 +74,8 @@ const FormlistItem = ({ form, refreshData }: any) => {
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
-                className=" bg-red-600 text-white"
-                onClick={() => deleteForm()}
+                className="bg-red-600 text-white"
+                onClick={deleteForm}
               >
                 Continue
               </AlertDialogAction>
@@ -76,7 +88,7 @@ const FormlistItem = ({ form, refreshData }: any) => {
       <h2 className="text-sm text-gray-500">
         {form.formSubheading || form.subheading}
       </h2>
-      <hr className=" my-4" />
+      <hr className="my-4" />
       <div className="flex justify-between items-center flex-wrap gap-y-4">
         <div>
           <RWebShare
@@ -96,12 +108,10 @@ const FormlistItem = ({ form, refreshData }: any) => {
           </RWebShare>
         </div>
         <Button
-          onClick={() =>
-            router.push(`http://localhost:3000/edit-form/${form?.data.id}`)
-          }
-          className="gap-2 flex bg-blue-700 text-white hover:text-black "
+          onClick={handleEditRoute}
+          className="gap-2 flex bg-blue-700 text-white hover:text-black"
         >
-          <Edit className=" w-5 h-5" />
+          <Edit className="w-5 h-5" />
           Edit
         </Button>
       </div>

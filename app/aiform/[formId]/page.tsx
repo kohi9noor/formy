@@ -31,7 +31,7 @@ const page = ({ params }: any) => {
   return (
     <>
       <div
-        className=" p-10 flex justify-center items-center w-full h-screen"
+        className=" p-10 flex justify-center items-center w-full max-h-max"
         style={{
           backgroundImage: record?.background,
         }}

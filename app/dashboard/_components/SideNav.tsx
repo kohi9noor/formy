@@ -9,11 +9,12 @@ import {
   Shield,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Progress } from "@/components/ui/progress";
 
 const SideNav = () => {
+  const router = useRouter();
   const path = usePathname();
 
   useEffect(() => {
@@ -53,10 +54,12 @@ const SideNav = () => {
         {menuList.map((menu) => {
           return (
             <h2
+              onClick={() => {
+                console.log("route hit", menu.path);
+                router.push(menu.path);
+              }}
               className={`p-4 hover:bg-blue-600 hover:text-white cursor-pointer mb-3 m-5 flex items-center gap-3 *:
-                ${
-                  path.includes(menu.path) !== false && `bg-blue-500 text-white`
-                }
+                ${menu.path == path && `bg-blue-500 text-white`}
                 `}
               key={menu.name}
             >

@@ -10,7 +10,7 @@ import FormlistItem from "./FormlistItem";
 const FormList = () => {
   const { user } = useUser();
   const [formList, setFormList] = useState<any>();
-  console.log(formList);
+
   const getFormList = async () => {
     const result = await db
       .select()
@@ -19,6 +19,7 @@ const FormList = () => {
       .orderBy(desc(forms.id));
     // console.log(result);
     setFormList(result);
+
     console.log(formList);
   };
 
@@ -33,6 +34,7 @@ const FormList = () => {
           return (
             <div key={index}>
               <FormlistItem
+                id={form?.id}
                 form={JSON.parse(form?.jsonform)}
                 refreshData={getFormList}
               />
