@@ -15,6 +15,8 @@ import { db } from "@/config";
 import { userResponse } from "@/config/schema";
 import moment from "moment";
 import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import { generateRandomString } from "@/lib/utils";
 
 const FormUI = ({
   jsonForm,
@@ -28,7 +30,7 @@ const FormUI = ({
   const { toast } = useToast();
 
   const [formData, setFormData] = useState<any | undefined>();
-
+  const router = useRouter();
   let formRef = useRef();
 
   const onFormSubit = async (event: any) => {
@@ -41,12 +43,17 @@ const FormUI = ({
         formRef: Id,
       });
 
+      console.log(result);
       if (result) {
         toast({
           title: "your application submited",
         });
         formRef.current?.reset();
         setFormData({});
+
+        const responseId = generateRandomString(10);
+
+        router.push(`/submit/${responseId}`);
       }
     } catch (error) {
       console.log(error);

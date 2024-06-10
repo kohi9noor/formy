@@ -16,7 +16,10 @@ const Header = () => {
   return (
     !path.includes("aiform") && (
       <div className=" p-5 border shadow-sm justify-between flex items-center">
-        <div className=" flex items-center text-2xl font-semibold">
+        <div
+          onClick={() => router.push("/")}
+          className=" cursor-pointer flex items-center text-2xl font-semibold"
+        >
           <Image src={"/logo.svg"} width={50} height={50} alt="logo" />
           <h1 className="">formy</h1>
         </div>

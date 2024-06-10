@@ -53,7 +53,7 @@ const ListItem = ({ jsonForm, formRecord }: any) => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
-    XLSX.writeFile(workbook, "DataSheet.xlsx");
+    XLSX.writeFile(workbook, `${jsonForm.formTitle || jsonForm.title}.xlsx`);
   };
 
   return (

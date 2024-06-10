@@ -22,3 +22,7 @@ export const extractJson = (data: any) => {
     return null;
   }
 };
+
+export function generateRandomString(length) {
+  return [...Array(length)].map(() => Math.random().toString(36)[2]).join("");
+}

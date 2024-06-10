@@ -96,7 +96,7 @@ const FormlistItem = ({ id, form, refreshData }: any) => {
               text: `${
                 form.formSubheading || form.subheading
               }, Build your form in seconds with formy`,
-              url: `http://localhost:3000/aiform/${form?.data?.id}`,
+              url: `http://localhost:3000/aiform/${id}`,
               title: `${form?.title || form?.formTitle}`,
             }}
             onClick={() => console.log("shared successfully!")}

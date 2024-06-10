@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 const page = ({ params }: any) => {
   const [record, setRecord] = useState<any | undefined>();
 
-  const [jsonForm, setJsonForm] = useState();
+  const [jsonForm, setJsonForm] = useState<any>();
 
   useEffect(() => {
     params && getFormData();
@@ -31,7 +31,7 @@ const page = ({ params }: any) => {
   return (
     <>
       <div
-        className=" p-10 flex justify-center items-center w-full max-h-max"
+        className=" p-10 flex justify-center items-center w-full min-h-screen"
         style={{
           backgroundImage: record?.background,
         }}
@@ -59,8 +59,6 @@ const page = ({ params }: any) => {
           </div>
         </Link>
       </div>
-
-      {/* <div>huehuehu</div> */}
     </>
   );
 };
