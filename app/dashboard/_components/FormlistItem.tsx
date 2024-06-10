@@ -95,7 +95,7 @@ const FormlistItem = ({ id, form, refreshData }: any) => {
             data={{
               text: `${
                 form.formSubheading || form.subheading
-              }, Build your form in seconds with formy`,
+              }, Build your form in seconds with form-prompt`,
               url: `http://localhost:3000/aiform/${id}`,
               title: `${form?.title || form?.formTitle}`,
             }}

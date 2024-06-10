@@ -21,7 +21,7 @@ const Header = () => {
           className=" cursor-pointer flex items-center text-2xl font-semibold"
         >
           <Image src={"/logo.svg"} width={50} height={50} alt="logo" />
-          <h1 className="">formy</h1>
+          <h1 className="">form-prompt</h1>
         </div>
         {isSignedIn ? (
           <div className=" flex items-center gap-5">

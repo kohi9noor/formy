@@ -55,7 +55,7 @@ const page = ({ params }: any) => {
               height={26}
               className="rounded-full"
             />
-            Build your own ai form with formy
+            Build your own ai form with form-prompt
           </div>
         </Link>
       </div>

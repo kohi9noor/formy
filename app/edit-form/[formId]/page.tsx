@@ -167,7 +167,7 @@ const EditForm = () => {
             data={{
               text: `${
                 jsonForm?.formSubheading || jsonForm?.subheading
-              }, Build your form in seconds with formy`,
+              }, Build your form in seconds with form-prompt`,
               url: `http://localhost:3000/aiform/${jsonForm?.data?.id}`,
               title: `${jsonForm?.title || jsonForm?.formTitle}`,
             }}
